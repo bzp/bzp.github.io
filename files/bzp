@@ -3,30 +3,30 @@
 
 export YO_FECTH="curl -Ls"
 export YO_CHECK="curl -Lso /dev/null -w %{http_code}"
-export YO_REPO="ptdorf.github.io/files"
+export YO_REPO="bzp.github.io/files"
 
-yo.main() {
+bzp.main() {
   local cmd="${1:-help}"
   local pkg="${2:-yo}"
   case ${cmd} in
-    "find")    yo.find    "${pkg}"  ;;
-    "show")    yo.show    "${pkg}"  ;;
-    "run")     yo.run     "${pkg}"  ;;
-    "info")    yo.info              ;;
+    "find")    bzp.find    "${pkg}"  ;;
+    "show")    bzp.show    "${pkg}"  ;;
+    "run")     bzp.run     "${pkg}"  ;;
+    "info")    bzp.info              ;;
     "help"|"-h")
-      echo "    yo find     NAME    Finds the url for a package"
-      echo "    yo show     NAME    Shows the package content"
-      echo "    yo run      NAME    Runs the package"
-      echo "    yo info             Shows info for this system"
+      echo "    bzp find     NAME    Finds the url for a package"
+      echo "    bzp show     NAME    Shows the package content"
+      echo "    bzp run      NAME    Runs the package"
+      echo "    bzp info             Shows info for this system"
       ;;
 
     *)  echo >&2 "Error: Command ${cmd} not found."; return 1 ;;
   esac
 }
 
-yo.run() {
+bzp.run() {
   mkdir -p ${HOME}/.yo/installed
-  ${YO_FECTH} $(yo.find ${1})|bash
+  ${YO_FECTH} $(bzp.find ${1})|bash
   local note="${HOME}/.yo/installed/${1}"
   cat <<EOS > ${note}
 YO_PACKAGE='$1'
@@ -36,25 +36,25 @@ EOS
   cat ${note}
 }
 
-yo.show() {
-  ${YO_FECTH} $(yo.find ${1})
+bzp.show() {
+  ${YO_FECTH} $(bzp.find ${1})
 }
 
-yo.find() {
+bzp.find() {
   local pkg="${1}"
 
-  local url="${YO_REPO}/$(yo._manager)/${pkg}"
-  local ok="$(yo._check ${url})"
+  local url="${YO_REPO}/$(bzp._manager)/${pkg}"
+  local ok="$(bzp._check ${url})"
   [ "${ok}" == "ok" ] && echo ${url} && return
 
   local url="${YO_REPO}/shared/${pkg}"
-  local ok="$(yo._check ${url})"
+  local ok="$(bzp._check ${url})"
   [ "${ok}" == "ok" ] && echo ${url} && return
 
   echo "(Not found)"
 }
 
-yo._check() {
+bzp._check() {
   local code="$(${YO_CHECK} ${1})"
   # echo "==> Running ${YO_CHECK} ${url}"
   # echo "==> Trying ${url}: ${code}"
@@ -62,7 +62,7 @@ yo._check() {
   return
 }
 
-yo._manager() {
+bzp._manager() {
   [ `uname` == "Darwin" ]        && echo "osx" && return
   [ -f "/etc/redhat-release" ]   && echo "yum" && return
   [ ! -f "/etc/os-release" ]     && echo "unkownn" && return
@@ -75,7 +75,7 @@ yo._manager() {
   echo "unkownn 1"
 }
 
-yo._distro() {
+bzp._distro() {
   [ `uname` == "Darwin" ]      && echo "osx" && return
   [ -f "/etc/redhat-release" ] && echo "redhat" && return
 
@@ -87,14 +87,14 @@ yo._distro() {
   echo "unknow"
 }
 
-yo.info() {
+bzp.info() {
   echo "Repo    = ${YO_REPO}"
   echo "Distro  = ${YO_DISTRO}"
   echo "Manager = ${YO_MANAGER}"
 }
 
-export YO_DISTRO="$(yo._distro)"
-export YO_MANAGER="$(yo._manager)"
+export YO_DISTRO="$(bzp._distro)"
+export YO_MANAGER="$(bzp._manager)"
 
 # if [ ${0} = ${BASH_SOURCE} ]
 # then
@@ -104,4 +104,4 @@ export YO_MANAGER="$(yo._manager)"
 #   echo "Sourced args: ${@:-}"
 # fi
 
-yo.main $@
+bzp.main $@

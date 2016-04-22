@@ -2,7 +2,7 @@
 set -eu
 
 CURL="curl -Lso"
-REPO="ptdorf.github.io/files"
+REPO="bzp.github.io/files"
 
 ${CURL} ~/.bashrc         ${REPO}/bashrc
 ${CURL} ~/.functions      ${REPO}/functions
@@ -13,7 +13,7 @@ ${CURL} ~/.vimrc          ${REPO}/vimrc
 ${CURL} ~/.zshrc          ${REPO}/zshrc
 ${CURL} ~/.my.cnf         ${REPO}/my.cnf
 
-${CURL} /usr/local/bin/yo ${REPO}/yo
-chmod +x /usr/local/bin/yo
+${CURL} /usr/local/bin/bzp ${REPO}/bzp
+chmod +x /usr/local/bin/bzp
 
 source ~/.bashrc

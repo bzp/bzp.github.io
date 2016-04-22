@@ -1,4 +1,4 @@
-[ -f ~/.yo.sh ] && source ~/.yo.sh
+[ -f ~/.bzp.sh ] && source ~/.bzp.sh
 
 
 git.br() {
