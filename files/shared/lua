@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -eu
+
+VERSION="${2:-5.3.2}"
+TMP_DIR="/tmp/_build"
+
+echo "==> Preparing..."
+mkdir -p "${TMP_DIR}"
+rm -fr "${TMP_DIR}/lua-${VERSION}"
+
+echo "==> Downloading ${VERSION}..."
+cd "${TMP_DIR}"
+curl -sLO "http://www.lua.org/ftp/lua-${VERSION}.tar.gz"
+
+echo "==> Building..."
+tar xfv lua-${VERSION}.tar.gz
+cd lua-${VERSION}
+make linux test
+sudo make install
+
+lua -v

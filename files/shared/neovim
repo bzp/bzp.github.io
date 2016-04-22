@@ -1,0 +1,5 @@
+cd /tmp
+git clone https://github.com/neovim/neovim.git
+cd /tmp/neovim
+make
+rm -fr /tmp/neovim*

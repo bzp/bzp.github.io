@@ -1,0 +1,10 @@
+cat <<EOS >> /etc/ssh/sshd_config
+
+
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+AllowGroups ssh-users
+EOS
+
+echo "Now call do: sudo service ssh restart"

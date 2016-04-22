@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+
+CURL="curl -Lso"
+REPO="ptdorf.github.io/files"
+
+${CURL} ~/.bashrc         ${REPO}/bashrc
+${CURL} ~/.functions      ${REPO}/functions
+${CURL} ~/.bash_profile   ${REPO}/bash_profile
+${CURL} ~/.inputrc        ${REPO}/inputrc
+${CURL} ~/.gitconfig      ${REPO}/gitconfig
+${CURL} ~/.vimrc          ${REPO}/vimrc
+${CURL} ~/.zshrc          ${REPO}/zshrc
+${CURL} ~/.my.cnf         ${REPO}/my.cnf
+
+${CURL} /usr/local/bin/yo ${REPO}/yo
+chmod +x /usr/local/bin/yo
+
+source ~/.bashrc

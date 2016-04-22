@@ -1,0 +1,44 @@
+set nocompatible
+
+set number
+set paste
+set nowrap
+set nocp
+set nohlsearch
+set noswapfile
+set nobackup
+set nocompatible
+set ruler
+set splitbelow
+set splitright
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set textwidth=0
+set modeline
+set autoindent
+set smartindent
+set copyindent
+set incsearch
+set ignorecase
+set smartcase
+set visualbell
+set smarttab
+set ttyfast
+set fileformat=unix
+set fileformats=unix
+set encoding=utf-8
+set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:¶
+set showbreak=↪
+set fillchars=diff:⣿
+set linespace=10
+set backspace=indent,eol,start
+set scrolloff=3
+set laststatus=2
+set wildmenu
+set wildmode=list:longest,full
+set clipboard=unnamed
+
+:hi! ExtraWhitespace ctermfg=white ctermbg=red
+:match ExtraWhitespace /\s\+$/

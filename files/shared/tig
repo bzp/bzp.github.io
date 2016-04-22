@@ -1,0 +1,6 @@
+rm -fr /tmp/tig
+git clone https://github.com/jonas/tig.git /tmp/tig
+cd /tmp/tig
+yo install dev
+make install prefix=/usr/local
+rm -fr /tmp/tig

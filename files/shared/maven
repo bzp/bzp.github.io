@@ -1,0 +1,9 @@
+source ~/.bashrc
+
+cd /tmp
+curl -LO http://apache.uib.no/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+tar xfv apache-maven-3.3.9-bin.tar.gz
+mv apache-maven-3.3.9 /usr/local/maven
+echo "pathmunge /usr/local/maven/bin"|tee /etc/profile.d/maven
+
+echo "Done"

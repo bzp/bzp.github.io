@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+
+VERSION="${1:-3.0.5}"
+TMP_DIR="/tmp/_build"
+
+echo "==> Preparing..."
+mkdir -p "${TMP_DIR}"
+rm -fr "${TMP_DIR}/redis-${VERSION}"
+
+echo "==> Downloading ${VERSION}..."
+cd "${TMP_DIR}"
+curl -sLO "http://download.redis.io/releases/redis-${VERSION}.tar.gz"
+
+echo "==> Building..."
+tar xfv redis-${VERSION}.tar.gz
+cd redis-${VERSION}
+make
+sudo make install

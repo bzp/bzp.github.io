@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -eu
+
+curl -Lso /usr/local/bin/yo "ptdorf.github.io/files/yo"
+chmod +x /usr/local/bin/yo

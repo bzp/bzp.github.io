@@ -1,0 +1,16 @@
+[alias]
+    st = status
+    br = branch
+    co = checkout
+    ci = commit
+    ll = log --pretty=format:'%C(27)%h%Creset %C(245)%ad%Creset %s %C(245) %cn%Creset %C(bold)%d' --date=short
+[color]
+    ui = true
+[grep]
+    lineNumber = true
+    extendRegexp = true
+[core]
+    quotepath = false
+    excludesfile = ~/.gitignore
+[alias]
+    gg = "!(git fetch) && (git rebase @{u} || (git rebase --abort && echo "Failed to rebase" && exit 1))"

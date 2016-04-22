@@ -1,0 +1,6 @@
+echo mysql -e "CHANGE MASTER TO MASTER_HOST='example.com', MASTER_USER='slave', MASTER_PASSWORD= 'p';"
+
+sudo rm -fr /var/lib/mysql/*
+sudo rm -fr /var/log/mysql/*
+sudo mysql_install_db --user=mysql --datadir=/var/lib/mysql
+sudo mysqld --user=mysql

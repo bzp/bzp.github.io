@@ -1,0 +1,25 @@
+apt-get install -y fail2ban
+
+cat <<EOS >> /etc/fail2ban/fail2ban.conf
+
+
+# Installed by yo!
+logtarget = /var/log/fail2ban.log
+EOS
+
+cp /etc/fail2ban/jail.{conf,local}
+
+cat <<EOS >> /etc/fail2ban/jail.local
+
+
+[sshd-iptables]
+enabled  = true
+filter   = sshd
+action   = iptables[name=SSH, port=ssh, protocol=tcp]
+logpath  = /var/log/secure
+maxretry = 2
+
+#          Localhost     Pedro VPN       Pedro Home      Oslo Office     Pedro Fiber
+ignoreip = 127.0.0.1/8   54.236.81.221   84.212.91.206   80.91.32.0/20   85.167.47.133
+
+EOS

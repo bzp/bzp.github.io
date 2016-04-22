@@ -1,0 +1,35 @@
+apt-get install -y apache2
+
+a2enmod rewrite
+a2enmod vhost_alias
+a2enmod status
+a2enmod imfo
+
+cat <<EOS > /etc/apache2/sites-enabled/001-virtual.conf
+ServerName dotser.net
+
+<Directory /var/www/>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
+
+<VirtualHost *:80>
+    ServerName dotser.net
+    ServerAlias *
+
+    UseCanonicalName off
+    VirtualDocumentRoot "/var/www/vhosts/%0/public"
+</Virtualhost>
+
+<Location "/server-status">
+    SetHandler server-status
+    Require ip 127.0.0.1
+</Location>
+
+<Location "/server-info">
+    SetHandler server-info
+    Require ip 127.0.0.1
+</Location>
+
+EOS

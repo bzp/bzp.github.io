@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eu
+
+sudo yum update -y
+sudo yum install -y https://www.rdoproject.org/repos/rdo-release.rpm
+sudo yum install -y openstack-packstack
+packstack --allinone

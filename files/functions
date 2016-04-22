@@ -1,0 +1,13 @@
+[ -f ~/.yo.sh ] && source ~/.yo.sh
+
+
+git.br() {
+  [ ! `which git 2>/dev/null` ] && return
+  local br="$(git rev-parse --abbrev-ref HEAD 2>/dev/null||true)"
+  [ -n "${br}" ] && echo " (${br})" || true
+}
+
+ex() {
+  echo "${1}" >&2
+  return "${2:-1}"
+}

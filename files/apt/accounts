@@ -1,0 +1,13 @@
+addgroup admin
+addgroup ssh-users
+
+echo "%admin ALL = (ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+
+adduser --ingroup admin --disabled-password --gecos '' pedro
+usermod -a -G ssh-users pedro
+id pedro
+
+mkdir -p /home/pedro/.ssh
+curl -Lso /home/pedro/.ssh/authorized_keys ptdorf.github.io/files/keys/pedro.pub
+chown -R pedro:admin /home/pedro
+chmod 700 /home/pedro/.ssh

@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+# set -eu
+
+export YO_FECTH="curl -Ls"
+export YO_CHECK="curl -Lso /dev/null -w %{http_code}"
+export YO_REPO="ptdorf.github.io/files"
+
+yo.main() {
+  local cmd="${1:-help}"
+  local pkg="${2:-yo}"
+  case ${cmd} in
+    "find")    yo.find    "${pkg}"  ;;
+    "show")    yo.show    "${pkg}"  ;;
+    "run")     yo.run     "${pkg}"  ;;
+    "info")    yo.info              ;;
+    "help"|"-h")
+      echo "    yo find     NAME    Finds the url for a package"
+      echo "    yo show     NAME    Shows the package content"
+      echo "    yo run      NAME    Runs the package"
+      echo "    yo info             Shows info for this system"
+      ;;
+
+    *)  echo >&2 "Error: Command ${cmd} not found."; return 1 ;;
+  esac
+}
+
+yo.run() {
+  mkdir -p ${HOME}/.yo/installed
+  ${YO_FECTH} $(yo.find ${1})|bash
+  local note="${HOME}/.yo/installed/${1}"
+  cat <<EOS > ${note}
+YO_PACKAGE='$1'
+YO_INSTALLED='`date`'
+EOS
+
+  cat ${note}
+}
+
+yo.show() {
+  ${YO_FECTH} $(yo.find ${1})
+}
+
+yo.find() {
+  local pkg="${1}"
+
+  local url="${YO_REPO}/$(yo._manager)/${pkg}"
+  local ok="$(yo._check ${url})"
+  [ "${ok}" == "ok" ] && echo ${url} && return
+
+  local url="${YO_REPO}/shared/${pkg}"
+  local ok="$(yo._check ${url})"
+  [ "${ok}" == "ok" ] && echo ${url} && return
+
+  echo "(Not found)"
+}
+
+yo._check() {
+  local code="$(${YO_CHECK} ${1})"
+  # echo "==> Running ${YO_CHECK} ${url}"
+  # echo "==> Trying ${url}: ${code}"
+  [ "${code}" == "200" ] && echo "ok" || echo "fail"
+  return
+}
+
+yo._manager() {
+  [ `uname` == "Darwin" ]        && echo "osx" && return
+  [ -f "/etc/redhat-release" ]   && echo "yum" && return
+  [ ! -f "/etc/os-release" ]     && echo "unkownn" && return
+
+  source /etc/os-release
+  [ "${ID}" == "centos" ] && echo "yum" && return
+  [ "${ID}" == "debian" ] && echo "apt" && return
+  [ "${ID}" == "ubuntu" ] && echo "apt" && return
+
+  echo "unkownn 1"
+}
+
+yo._distro() {
+  [ `uname` == "Darwin" ]      && echo "osx" && return
+  [ -f "/etc/redhat-release" ] && echo "redhat" && return
+
+  source /etc/os-release
+  [ "${ID}" == "centos" ] && echo "centos" && return
+  [ "${ID}" == "debian" ] && echo "debian" && return
+  [ "${ID}" == "ubuntu" ] && echo "ubuntu" && return
+
+  echo "unknow"
+}
+
+yo.info() {
+  echo "Repo    = ${YO_REPO}"
+  echo "Distro  = ${YO_DISTRO}"
+  echo "Manager = ${YO_MANAGER}"
+}
+
+export YO_DISTRO="$(yo._distro)"
+export YO_MANAGER="$(yo._manager)"
+
+# if [ ${0} = ${BASH_SOURCE} ]
+# then
+#   echo "Direct args: ${@:-}"
+#   yo ${@:-}
+# else
+#   echo "Sourced args: ${@:-}"
+# fi
+
+yo.main $@

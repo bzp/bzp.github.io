@@ -1,0 +1,5 @@
+userdel pedro
+groupdel admin
+groupdel ssh-users
+rm -fr /home/pedro
+rm /etc/sudoers.d/admin

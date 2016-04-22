@@ -1,0 +1,8 @@
+cd /tmp
+curl -LO https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz
+tar xfv cmake-3.5.2.tar.gz
+cd /tmp/cmake-3.5.2
+./bootstrap
+make
+make install
+rm -fr /tmp/cmake-3.5.2*
