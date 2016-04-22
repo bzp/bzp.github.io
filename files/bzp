@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # set -eu
 
-export YO_FECTH="curl -Ls"
-export YO_CHECK="curl -Lso /dev/null -w %{http_code}"
-export YO_REPO="bzp.github.io/files"
+export BZP_FECTH="curl -Ls"
+export BZP_CHECK="curl -Lso /dev/null -w %{http_code}"
+export BZP_REPO="bzp.github.io/packages"
 
 bzp.main() {
   local cmd="${1:-help}"
@@ -26,28 +26,28 @@ bzp.main() {
 
 bzp.run() {
   mkdir -p ${HOME}/.yo/installed
-  ${YO_FECTH} $(bzp.find ${1})|bash
+  ${BZP_FECTH} $(bzp.find ${1})|bash
   local note="${HOME}/.yo/installed/${1}"
   cat <<EOS > ${note}
-YO_PACKAGE='$1'
-YO_INSTALLED='`date`'
+BZP_PACKAGE='$1'
+BZP_INSTALLED='`date`'
 EOS
 
   cat ${note}
 }
 
 bzp.show() {
-  ${YO_FECTH} $(bzp.find ${1})
+  ${BZP_FECTH} $(bzp.find ${1})
 }
 
 bzp.find() {
   local pkg="${1}"
 
-  local url="${YO_REPO}/$(bzp._manager)/${pkg}"
+  local url="${BZP_REPO}/$(bzp._manager)/${pkg}"
   local ok="$(bzp._check ${url})"
   [ "${ok}" == "ok" ] && echo ${url} && return
 
-  local url="${YO_REPO}/shared/${pkg}"
+  local url="${BZP_REPO}/shared/${pkg}"
   local ok="$(bzp._check ${url})"
   [ "${ok}" == "ok" ] && echo ${url} && return
 
@@ -55,8 +55,8 @@ bzp.find() {
 }
 
 bzp._check() {
-  local code="$(${YO_CHECK} ${1})"
-  # echo "==> Running ${YO_CHECK} ${url}"
+  local code="$(${BZP_CHECK} ${1})"
+  # echo "==> Running ${BZP_CHECK} ${url}"
   # echo "==> Trying ${url}: ${code}"
   [ "${code}" == "200" ] && echo "ok" || echo "fail"
   return
@@ -88,13 +88,13 @@ bzp._distro() {
 }
 
 bzp.info() {
-  echo "Repo    = ${YO_REPO}"
-  echo "Distro  = ${YO_DISTRO}"
-  echo "Manager = ${YO_MANAGER}"
+  echo "Repo    = ${BZP_REPO}"
+  echo "Distro  = ${BZP_DISTRO}"
+  echo "Manager = ${BZP_MANAGER}"
 }
 
-export YO_DISTRO="$(bzp._distro)"
-export YO_MANAGER="$(bzp._manager)"
+export BZP_DISTRO="$(bzp._distro)"
+export BZP_MANAGER="$(bzp._manager)"
 
 # if [ ${0} = ${BASH_SOURCE} ]
 # then
