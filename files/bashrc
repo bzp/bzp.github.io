@@ -16,6 +16,8 @@ export HISTSIZE="123456"
 export HISTFILESIZE="1234567"
 export LC_ALL="C"
 export PATH="${PATH}:${HOME}/bin"
+export GREP_COLOR="39;41"
+export GREP_OPTIONS="--color=auto"
 export LS_COLORS="di=1:ln=1;38;5;27:ex=1;38;5;27:or=1;38;5;33:mi=1;38;5;231;48;5;232:ow=1;38;5;231;48;5;208:tw=1;48;5;208;38;5;231"
 
 RED="\033[31;1m"
